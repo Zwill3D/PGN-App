@@ -4,6 +4,9 @@ from pathlib import Path
 from tkinter import messagebox
 from tkinter import ttk
 from tkinterdnd2 import DND_FILES, TkinterDnD
+import webbrowser 
+import requests
+import pyperclip
 
 #Fenstereinstellungen
 root = TkinterDnD.Tk()
@@ -37,21 +40,38 @@ def ger_eng(input: str) -> str: #Kovertiert deutsches PGN zu englischem
 def btn_pressed_conv(): #Beim Betätigen des "Konvertieren" Buttons: führt ger_eng() aus, gibt englisches PGN im Ausgabetextfeld aus
     global pgn_eng
 
-    pgn_eng = ger_eng(pgn_ger)
-
     if pgn_ger == "":
-        messagebox.showinfo("Keine Ausgangs-PGN gefunden.")
+        messagebox.showerror("Fehler", "Keine Ausgangs-PGN gefunden.")
         return
     txt_out.configure(state="normal")
     txt_out.delete("1.0", tk.END)
+    pgn_eng = ger_eng(pgn_ger)
     txt_out.insert("1.0", pgn_eng)
     txt_out.configure(state="disabled")
 
 def btn_pressed_clip():
-    pass
+    if pgn_eng == "":
+        messagebox.showerror("Fehler", "Keine konvertierte PGN gefunden. Bitte ein deutsches PGN ins obere Textfeld einfügen und 'Konvertieren' drücken.")
+        return
+    pyperclip.copy(pgn_eng)
 
 def btn_pressed_lichess():
-    pass 
+    url = "https://lichess.org/api/import"
+    data = {"pgn": pgn_eng}  
+    try:
+        response = requests.post(url, data=data)
+        
+        if response.status_code == 200:
+            game_data = response.json()
+            lichess_url = game_data.get("url")
+            
+            analysis_url = f"{lichess_url}/minus"
+            
+            webbrowser.open(analysis_url)
+        else:
+            messagebox.showerror("Fehler", f"Fehler beim Importieren des Spiels. Lichess Status Code: {response.status_code}\n {response.text}")
+    except requests.exceptions.RequestException as e:
+        messagebox.showerror("Fehler", f"Netzwerkfehler: {e}")
 
 #Fensterinhalt top->bot
 frm_main = ttk.Frame(root, padding=10)
