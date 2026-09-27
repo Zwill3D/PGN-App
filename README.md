@@ -8,7 +8,7 @@ Input kann über manuelle Eingabe, copy/paste oder durch drag&drop einer Textdat
 
 Die Schaltfläche "Konvertieren" überträgt dann deutsche Notation ins PGN Format
 
-Die Ausgabe erfolgt im zweiten Fenster.
+Die Ausgabe erfolgt im zweiten Textfeld.
 
 Nach dem Betätigen der Schaltfläche "In Zwischenablage kopieren" kann man die PGN Daten in ein Dokument, Webseite oder Software seiner Wahl mittels der der üblichen Methoden einfügen. 
 Die Schaltfläche "Auf Lichess.org analysieren" öffnet das Analyse-Tool der kostenfreien opensource 
