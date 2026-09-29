@@ -1,6 +1,5 @@
 #imports
 import tkinter as tk
-from pathlib import Path
 from tkinter import messagebox
 from tkinter import ttk
 from tkinterdnd2 import DND_FILES, TkinterDnD
